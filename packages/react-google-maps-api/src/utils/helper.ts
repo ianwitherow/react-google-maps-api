@@ -3,6 +3,9 @@
 import { reduce } from './reduce'
 import { forEach } from './foreach'
 
+// Events that apply to the instance's path, not the instance itself
+const appliesToPath = ["set_at", "insert_at", "remove_at"];
+
 export const applyUpdaterToNextProps = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updaterMap: any,
@@ -48,7 +51,9 @@ export function registerEvents(
       onEventName: any
     ): google.maps.MapsEventListener[] {
       if (typeof props[onEventName] === 'function') {
-        acc.push(google.maps.event.addListener(instance, googleEventName, props[onEventName]))
+        // Several events need to attach to a polygon path
+        const applyTo = (appliesToPath.indexOf(googleEventName) > -1) ? instance.getPath() : instance;
+        acc.push(google.maps.event.addListener(applyTo, googleEventName, props[onEventName]))
       }
 
       return acc

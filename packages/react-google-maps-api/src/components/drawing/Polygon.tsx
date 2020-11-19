@@ -17,6 +17,9 @@ const eventMap = {
   onMouseOver: 'mouseover',
   onMouseUp: 'mouseup',
   onRightClick: 'rightclick',
+  onPointInsert: 'insert_at',
+  onPointRemove: 'remove_at',
+  onPointSet: 'set_at',
 }
 
 const updaterMap = {
@@ -111,6 +114,12 @@ export interface PolygonProps {
   onLoad?: (polygon: google.maps.Polygon) => void
   /** This callback is called when the component unmounts. It is called with the polygon instance. */
   onUnmount?: (polygon: google.maps.Polygon) => void
+  /** This callback is called when a point is inserted on a polygon. It is called with the polygon instance. */
+  onPointInsert?: () => void
+  /** This callback is called when a point is removed from a polygon. It is called with the polygon instance. */
+  onPointRemove?: () => void
+  /** This callback is called when a point is moved on a polygon. It is called with the polygon instance. */
+  onPointSet?: () => void
 }
 
 export class Polygon extends React.PureComponent<PolygonProps, PolygonState> {
@@ -160,6 +169,7 @@ export class Polygon extends React.PureComponent<PolygonProps, PolygonState> {
         nextProps: this.props,
         instance: this.state.polygon,
       })
+
     }
   }
 
